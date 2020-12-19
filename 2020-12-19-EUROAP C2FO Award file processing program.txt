@@ -1,0 +1,432 @@
+000100 ID DIVISION.                                                     00000100
+000200                                                                  00000200
+000300 PROGRAM-ID.    APC2AWD.                                          00000300
+000400 AUTHOR.        VINEETH M.                                        00000400
+000500 DATE-WRITTEN.  27 JULY 2020.                                     00000500
+000600                                                                  00000600
+000700******************************************************************00000700
+000800*   PROJECT     : EURO AP                                         00000800
+000900*   PROGRAM ID  : APC2AWD                                         00000900
+001000*   TYPE        : BATCH                                           00001000
+001100*   PURPOSE     : PROCESSES AWARD FILE FROM C2FO INTERFACE        00001100
+001200******************************************************************00001200
+001300* UPDATE HISTORY                                                  00001300
+001400* **************                                                  00001400
+001500*                                                                 00001500
+001600* VERS.  DATE     AUTHOR SCCL         REASON                      00001600
+001700******************************************************************00001700
+001800* V0001  2020-07-27 VM   GAP2007001   INITIAL                     00001800
+001900******************************************************************00001900
+002000                                                                  00002000
+002100 ENVIRONMENT DIVISION.                                            00002100
+002200                                                                  00002200
+002300 INPUT-OUTPUT SECTION.                                            00002300
+002400*---------------------                                            00002400
+002500                                                                  00002500
+002600 FILE-CONTROL.                                                    00002600
+002700                                                                  00002700
+002800     SELECT INP-FILE ASSIGN TO UT-S-AWARDIN.                      00002800
+002900                                                                  00002900
+003000******************************************************************00003000
+003100                                                                  00003100
+003200 DATA DIVISION.                                                   00003200
+003300                                                                  00003300
+003400 FILE SECTION.                                                    00003400
+003500*-------------                                                    00003500
+003600                                                                  00003600
+003700 FD INP-FILE                                                      00003700
+003800     RECORDING MODE IS F                                          00003800
+003900     BLOCK CONTAINS 0 RECORDS                                     00003900
+004000     LABEL RECORDS ARE STANDARD                                   00004000
+004100     DATA RECORD IS INP-FILE-RECORD.                              00004100
+004200 01 INP-FILE-RECORD           PIC X(351).                         00004200
+004300                                                                  00004300
+004400                                                                  00004400
+004500 WORKING-STORAGE SECTION.                                         00004500
+004600*------------------------                                         00004600
+005200******************************************************************00005200
+005300*     PROGRAM DESCRIPTION                                        *00005300
+005400******************************************************************00005400
+005500 01  PROG-DEFINITION.                                             00005500
+005600     05  PROG-ID.                                                 00005600
+005700         10  MODNAME             PIC X(08)  VALUE  'APC2AWD'.     00005700
+005800         10  FILLER              PIC X(03)  VALUE  SPACES.        00005800
+005900         10  PWVERS              PIC X(05)  VALUE  'V0001'.       00005900
+006000         10  FILLER              PIC X(03)  VALUE  SPACES.        00006000
+006100     05  PROG-RUN.                                                00006100
+006200         10  PROG-RUN-DATE.                                       00006200
+006300             15  PROG-RUN-DAY    PIC X(02).                       00006300
+006400             15  FILLER          PIC X(01)  VALUE  '/'.           00006400
+006500             15  PROG-RUN-MONTH  PIC X(02).                       00006500
+006600             15  FILLER          PIC X(01)  VALUE  '/'.           00006600
+006700             15  PROG-RUN-YEAR   PIC X(02).                       00006700
+006800         10  FILLER              PIC X(02)  VALUE  SPACES.        00006800
+006900         10  PROG-RUN-TIME.                                       00006900
+007000             15  PROG-RUN-HOUR   PIC X(02).                       00007000
+007100             15  FILLER          PIC X(01)  VALUE  '.'.           00007100
+007200             15  PROG-RUN-MINUTE PIC X(02).                       00007200
+007300             15  FILLER          PIC X(01)  VALUE  '.'.           00007300
+007400             15  PROG-RUN-SECOND PIC X(02).                       00007400
+007500         10  FILLER              PIC X(03)  VALUE  SPACES.        00007500
+007600     05  PROG-DESCRIPTION.                                        00007600
+007700         10  FILLER              PIC X(42)  VALUE                 00007700
+007800                  'PROCESS C2FO AWARD FILE              '.        00007800
+007900         10  FILLER              PIC X(03)  VALUE  SPACES.        00007900
+008000     05  PROG-COMPILE.                                            00008000
+008100         10  FILLER              PIC X(10)  VALUE 'COMPILED: '.   00008100
+008200         10  PROG-LAST-COMPILE   PIC X(18)  VALUE                 00008200
+008300                                          '27/07/20  12:00:00'.   00008300
+008400                                                                  00008400
+008500******************************************************************00008500
+008600*     CURRENT TIME AND DATE   ACCEPT DT-DATE FROM DATE           *00008600
+008700*                             ACCEPT DT-TIME FROM TIME           *00008700
+008800******************************************************************00008800
+008900                                                                  00008900
+009000 01  DT-COMPILED                   PIC X(16).                     00009000
+009100 01  DT-DATE-TIME.                                                00009100
+009200     05  DT-DATE.                                                 00009200
+009300         10  DT-DATE-YY            PIC X(02).                     00009300
+009400         10  DT-DATE-MM            PIC X(02).                     00009400
+009500         10  DT-DATE-DD            PIC X(02).                     00009500
+009600     05  DT-TIME.                                                 00009600
+009700         10  DT-TIME-HH            PIC X(02).                     00009700
+009800         10  DT-TIME-MM            PIC X(02).                     00009800
+009900         10  DT-TIME-SS            PIC X(02).                     00009900
+010000         10  DT-TIME-HS            PIC X(02).                     00010000
+010100                                                                  00010100
+010200******************************************************************00010200
+010300*     ERROR DESCRIPTION                                          *00010300
+010400******************************************************************00010400
+010500                                                                  00010500
+010600 01  ED-ERROR-DESCRIPTION.                                        00010600
+010700     05  ED-SECTION-ID               PIC X(06).                   00010700
+010800     05  FILLER                      PIC X(01)   VALUE   '-'.     00010800
+010900     05  FILLER                      PIC X(02)   VALUE   SPACE.   00010900
+011000     05  ED-TIME.                                                 00011000
+011100         10  ED-TIME-HH                  PIC X(02).               00011100
+011200         10  ED-TIME-MM                  PIC X(02).               00011200
+011300         10  ED-TIME-SS                  PIC X(02).               00011300
+011400         10  ED-TIME-HS                  PIC X(02).               00011400
+011500     05  FILLER                      PIC X(02)   VALUE   SPACE.   00011500
+011600     05  ED-RETURN-CODE              PIC X(02).                   00011600
+011700     05  FILLER                      PIC X(02)   VALUE   SPACE.   00011700
+011800     05  ED-TEXT                     PIC X(80).                   00011800
+011900     05  ED-SQL  REDEFINES   ED-TEXT.                             00011900
+012000         10  ED-SQLCODE                  PIC X(07).               00012000
+012100         10  FILLER                      PIC X(03).               00012100
+012200         10  ED-SQLERRMC                 PIC X(70).               00012200
+012300 01  EDH-SQLCODE.                                                 00012300
+012400     05  EDH-SQLCODE-1-3             PIC X(03).                   00012400
+012500     05  EDH-SQLCODE-4-10            PIC X(07).                   00012500
+012600 01  EDH-SQLCODE-9   REDEFINES   EDH-SQLCODE PIC -(9)9.           00012600
+012700 01  EDO-DSNTIAR-OUTPUT.                                          00012700
+012800     05  EDO-LENGTH                  PIC S9(4) COMP  VALUE  +2400.00012800
+012900     05  ED0-TEXT    OCCURS     10   PIC X(240).                  00012900
+013000 01  EDI-DSNTIAR-INPUT.                                           00013000
+013100     05  EDI-LENGTH                  PIC S9(9) COMP  VALUE   +240.00013100
+013200                                                                  00013200
+013700******************************************************************00013700
+013800*     FILE LAYOUT                                                *00013800
+013900******************************************************************00013900
+013910 01 INP-PROCESS-INVOICE.
+013920    05 FILLER                        PIC X(01).
+013930    05 INP-PROCESS-RECORD            PIC X(350).
+013940
+014000 01 INP-DATA-RECORD.                                              00014000
+014100    05 INP-COMPANY-ID                PIC X(09).                   00014100
+014200    05 INP-COMPANY-NAME              PIC X(30).                   00014200
+014300    05 INP-DIVISION-ID               PIC X(03).                   00014300
+014400    05 INP-INVOICE-ID                PIC X(50).                   00014400
+014500    05 INP-ORIGINAL-AMOUNT           PIC 9(06)V9(2).              00014500
+014600    05 INP-CURRENCY                  PIC X(03).                   00014600
+014700    05 INP-ORIGINAL-DUE-DATE         PIC X(10).                   00014700
+014800    05 INP-TRNSCTN-TYPE              PIC 9(01).                   00014800
+014900    05 INP-ORIGINAL-INV-TRNSCTN-DATE PIC X(10).                   00014900
+015000    05 INP-PAY-DATE                  PIC X(10).                   00015000
+015100    05 INP-SUPP-ADDRESS-1            PIC X(30).                   00015100
+015200    05 INP-SUPP-ADDRESS-2            PIC X(30).                   00015200
+015300    05 INP-SUPP-CITY                 PIC X(20).                   00015300
+015400    05 INP-SUPP-STATE                PIC X(02).                   00015400
+015500    05 INP-SUPP-POSTAL-CODE          PIC 9(09).                   00015500
+015600    05 INP-SUPP-COUNTRY              PIC X(02).                   00015600
+015700    05 INP-SUPP-TAX-ID               PIC X(30).                   00015700
+015800    05 INP-BUYER-NAME                PIC X(30).                   00015800
+015900    05 INP-BUYER-ADDRESS             PIC X(30).                   00015900
+016000    05 INP-BUYER-TAX-ID              PIC X(30).                   00016000
+016100    05 INP-MARKET-TYPE               PIC X(02).                   00016100
+016200******************************************************************00016200
+016300*     WORK VARIABLES                                             *00016300
+016400******************************************************************00016400
+016500                                                                  00016500
+016600 01  FILE-REC-COUNT              PIC 9(6)   COMP VALUE ZEROES.    00016600
+016700 01  A01-UPDATE-COUNT            PIC 9(6)   COMP VALUE ZEROES.    00016700
+016800 01  A01-RESET-COUNT             PIC 9(6)   COMP VALUE ZEROES.    00016800
+016900 01  YESTER-INV-COUNT            PIC 9(6)   COMP VALUE ZEROES.    00016900
+017000 01  WS-DATE                     PIC X(4)   VALUE SPACES.         00017000
+017100 01  WS-ASN-DOC                  PIC X(23)  VALUE SPACES.         00017100
+017200 01  WS-SWITCHES.                                                 00017200
+017300     05 FILE-SWITCH              PIC X(1)   VALUE 'N'.            00017300
+017400        88 EOF                              VALUE 'Y'.            00017400
+017500        88 NOT-EOF                          VALUE 'N'.            00017500
+017600     05 RECORD-SWITCH            PIC X(1)   VALUE 'Y'.            00017600
+017700        88 MORE-RECORDS                     VALUE 'Y'.            00017700
+017800        88 NO-MORE-RECORDS                  VALUE 'N'.            00017800
+017900     05 ERROR-SWITCH             PIC X(1)   VALUE 'N'.            00017900
+018000        88 ANY-ERROR                        VALUE 'Y'.            00018000
+018100        88 NO-ERROR                         VALUE 'N'.            00018100
+018200                                                                  00018200
+018300******************************************************************00018300
+018400* DECLARATIONS FOR DATABASE                                      *00018400
+018500******************************************************************00018500
+018600                                                                  00018600
+018700     EXEC SQL     INCLUDE SQLCA      END-EXEC.                    00018700
+018800     EXEC SQL     INCLUDE APTA01     END-EXEC.                    00018800
+018900     EXEC SQL     INCLUDE APTS07     END-EXEC.                    00018900
+019000     EXEC SQL     INCLUDE APTS37     END-EXEC.                    00019000
+019100                                                                  00019100
+019200                                                                  00019200
+019300******************************************************************00019300
+019400                                                                  00019400
+019500 PROCEDURE DIVISION.                                              00019500
+019600                                                                  00019600
+019700*-----------------------------------------------------------------00019700
+019800 A0000-MAIN.                                                      00019800
+019900*-----------------------------------------------------------------00019900
+020000                                                                  00020000
+020100     PERFORM I0000-INITIAL                                        00020100
+020200                                                                  00020200
+020300     PERFORM P0000-PROCESS-FILE UNTIL EOF                         00020300
+020400                                   OR ANY-ERROR                   00020400
+020500                                                                  00020500
+020600     PERFORM R0000-A01-RESET                                      00020600
+020700                                                                  00020700
+020800     PERFORM Z0000-END                                            00020800
+020900                                                                  00020900
+021000     DISPLAY 'NUMBER OF FILE DATA RECORDS = ' FILE-REC-COUNT      00021000
+021100     DISPLAY 'NUMBER OF A01 ROWS UPDATED  = ' A01-UPDATE-COUNT    00021100
+021200     DISPLAY 'NUMBER OF A01 ROWS RESET    = ' A01-RESET-COUNT     00021200
+021300     DISPLAY 'INVOICES SENT TO C2FO YESTERDAY = '                 00021300
+021400                                              YESTER-INV-COUNT    00021400
+021500                                                                  00021500
+021600     IF ANY-ERROR                                                 00021600
+021700         MOVE 12 TO RETURN-CODE                                   00021700
+021800     END-IF                                                       00021800
+021900                                                                  00021900
+022000     GOBACK                                                       00022000
+022100     .                                                            00022100
+022200                                                                  00022200
+022300*-----------------------------------------------------------------00022300
+022400 I0000-INITIAL.                                                   00022400
+022500*-----------------------------------------------------------------00022500
+022600                                                                  00022600
+022700     MOVE    WHEN-COMPILED           TO DT-COMPILED               00022700
+022800     ACCEPT  DT-DATE               FROM DATE                      00022800
+022900     MOVE    DT-DATE-YY              TO PROG-RUN-YEAR             00022900
+023000     MOVE    DT-DATE-MM              TO PROG-RUN-MONTH            00023000
+023100     MOVE    DT-DATE-DD              TO PROG-RUN-DAY              00023100
+023200     ACCEPT  DT-TIME               FROM TIME                      00023200
+023300     MOVE    DT-TIME-HH              TO PROG-RUN-HOUR             00023300
+023400     MOVE    DT-TIME-MM              TO PROG-RUN-MINUTE           00023400
+023500     MOVE    DT-TIME-SS              TO PROG-RUN-SECOND           00023500
+023600     MOVE    DT-COMPILED             TO PROG-LAST-COMPILE         00023600
+023700                                                                  00023700
+023800     DISPLAY PROG-DEFINITION                                      00023800
+023900                                                                  00023900
+024000     EXEC SQL                                                     00024000
+024100         SELECT  MAX(S07_START_TSTAMP)                            00024100
+024200           INTO :S07-START-TSTAMP                                 00024200
+024300         FROM    APT_S07_SYS_RUN                                  00024300
+024400          WHERE  S07_RUN_TYPE    = 'U'                            00024400
+024500          AND    S07_END_TSTAMP  IS NULL                          00024500
+024600     END-EXEC                                                     00024600
+024700                                                                  00024700
+024800     IF   SQLCODE NOT =   ZERO                                    00024800
+024900          DISPLAY 'ERROR GETTING S07 START TIMESTAMP'             00024900
+025000          MOVE    'I100'             TO ED-SECTION-ID             00025000
+025100          MOVE    '12'               TO ED-RETURN-CODE            00025100
+025200          MOVE    'Y'                TO ERROR-SWITCH              00025200
+025300          PERFORM E0000-EROUTINE                                  00025300
+025400          PERFORM F0000-FORCE-ABEND                               00025400
+025500     END-IF                                                       00025500
+025600                                                                  00025600
+025700     OPEN INPUT INP-FILE                                          00025700
+025800     .                                                            00025800
+025900                                                                  00025900
+026000*-----------------------------------------------------------------00026000
+026100 P0000-PROCESS-FILE.                                              00026100
+026200*-----------------------------------------------------------------00026200
+026300                                                                  00026300
+026400     READ INP-FILE INTO INP-PROCESS-INVOICE                       00026400
+026500          AT END                                                  00026500
+026600             SET EOF TO TRUE                                      00026600
+026700             SET NO-MORE-RECORDS TO TRUE                          00026700
+026800          NOT AT END                                              00026800
+026900             COMPUTE FILE-REC-COUNT = FILE-REC-COUNT + 1          00026900
+027000     END-READ                                                     00027000
+027100                                                                  00027100
+027200*SKIP HEADER PROCESSING, PROCESS IF NOT EOF                       00027200
+027300     IF FILE-REC-COUNT > 1 AND MORE-RECORDS                       00027300
+027400                                                                  00027400
+027500        UNSTRING INP-PROCESS-RECORD DELIMITED BY ","              00027500
+027600            INTO INP-COMPANY-ID                                   00027600
+027700               , INP-COMPANY-NAME                                 00027700
+027800               , INP-DIVISION-ID                                  00027800
+027900               , INP-INVOICE-ID                                   00027900
+028000               , INP-ORIGINAL-AMOUNT                              00028000
+028100               , INP-CURRENCY                                     00028100
+028200               , INP-ORIGINAL-DUE-DATE                            00028200
+028300               , INP-TRNSCTN-TYPE                                 00028300
+028400               , INP-ORIGINAL-INV-TRNSCTN-DATE                    00028400
+028500               , INP-PAY-DATE                                     00028500
+028600               , INP-SUPP-ADDRESS-1                               00028600
+028700               , INP-SUPP-ADDRESS-2                               00028700
+028800               , INP-SUPP-CITY                                    00028800
+028900               , INP-SUPP-STATE                                   00028900
+029000               , INP-SUPP-POSTAL-CODE                             00029000
+029100               , INP-SUPP-COUNTRY                                 00029100
+029200               , INP-SUPP-TAX-ID                                  00029200
+029300               , INP-BUYER-NAME                                   00029300
+029400               , INP-BUYER-ADDRESS                                00029400
+029500               , INP-BUYER-TAX-ID                                 00029500
+029600               , INP-MARKET-TYPE                                  00029600
+029700        END-UNSTRING                                              00029700
+029800                                                                  00029800
+029900        INITIALIZE WS-ASN-DOC                                     00029900
+030000                                                                  00030000
+030100        UNSTRING INP-INVOICE-ID DELIMITED BY "³"                  00030100
+030200            INTO A01-FNC                                          00030200
+030300               , A01-SITE-CODE                                    00030300
+030400               , A01-DOC-BATCH                                    00030400
+030500               , WS-ASN-DOC                                       00030500
+030600               , WS-DATE                                          00030600
+030700        END-UNSTRING                                              00030700
+030800                                                                  00030800
+030900        IF  A01-DOC-BATCH(1:2) = 'SB'                             00030900
+031000        AND WS-ASN-DOC(12:1)   = '_'                              00031000
+031100           MOVE WS-ASN-DOC(1:11)  TO  A01-RCT-ADV-NO              00031100
+031200           MOVE WS-ASN-DOC(13:11) TO  A01-DOC-NO                  00031200
+031300        ELSE                                                      00031300
+031400           MOVE WS-ASN-DOC(1:11)  TO  A01-DOC-NO                  00031400
+031500        END-IF                                                    00031500
+031600                                                                  00031600
+031700        PERFORM U0000-A01-UPDATE                                  00031700
+031800                                                                  00031800
+031900     END-IF                                                       00031900
+032000     .                                                            00032000
+032100                                                                  00032100
+032200*-----------------------------------------------------------------00032200
+032300 U0000-A01-UPDATE.                                                00032300
+032400*-----------------------------------------------------------------00032400
+032500                                                                  00032500
+032600     EXEC SQL                                                     00032600
+032700          UPDATE APT_A01_DOCUMENT                                 00032700
+032800          SET    A01_UCR_STATUS      =                            00032800
+032900                     (SELECT S37_STATUS                           00032900
+033000                      FROM   APT_S37_UCR_STATUS                   00033000
+033100                      WHERE  S37_SHORT_DESCR = 'AWARDED')         00033100
+033200                ,A01_AWARDED_DATE    = :INP-PAY-DATE              00033200
+033300                ,A01_UCR_TMESTMP     = :S07-START-TSTAMP          00033300
+033400                ,A01_UCR_USERID      = 'APC2AWD'                  00033400
+033500          WHERE  A01_UCR_STATUS      =                            00033500
+033600                     (SELECT S37_STATUS                           00033600
+033700                      FROM   APT_S37_UCR_STATUS                   00033700
+033800                      WHERE  S37_SHORT_DESCR = 'SENT C2FO')       00033800
+033900          AND    A01_C2FO_SITE_CODE <> ' '                        00033900
+034000          AND    A01_AWARDED_DATE    = '0001-01-01'               00034000
+034100          AND    A01_PAID_FLAG       = 'N'                        00034100
+034200          AND    A01_FNC             = :A01-FNC                   00034200
+034300          AND    A01_SITE_CODE       = :A01-SITE-CODE             00034300
+034400          AND    A01_DOC_BATCH       = :A01-DOC-BATCH             00034400
+034500          AND    A01_DOC_NO          = :A01-DOC-NO                00034500
+034600     END-EXEC                                                     00034600
+034700     IF SQLCODE = ZERO                                            00034700
+034800        COMPUTE A01-UPDATE-COUNT =  A01-UPDATE-COUNT + 1          00034800
+034900     ELSE                                                         00034900
+035000        DISPLAY 'SQLCODE NOT OK'                                  00035000
+035100        DISPLAY 'A01 TABLE UPDATE ERROR'                          00035100
+035200        DISPLAY 'A01_FNC            = ' A01-FNC                   00035200
+035300        DISPLAY 'A01_SITE_CODE      = ' A01-SITE-CODE             00035300
+035400        DISPLAY 'A01_DOC_BATCH      = ' A01-DOC-BATCH             00035400
+035500        DISPLAY 'A01_DOC_NO         = ' A01-DOC-NO                00035500
+035600        MOVE    'U0000'             TO ED-SECTION-ID              00035600
+035700        MOVE    '12'                TO ED-RETURN-CODE             00035700
+035800        MOVE    'Y'                 TO ERROR-SWITCH               00035800
+035900        PERFORM E0000-EROUTINE                                    00035900
+036000        PERFORM F0000-FORCE-ABEND                                 00036000
+036100     END-IF                                                       00036100
+036200     .                                                            00036200
+036300                                                                  00036300
+036400*-----------------------------------------------------------------00036400
+036500 R0000-A01-RESET.                                                 00036500
+036600*-----------------------------------------------------------------00036600
+036700                                                                  00036700
+036800     EXEC SQL                                                     00036800
+036900          UPDATE APT_A01_DOCUMENT                                 00036900
+037000          SET    A01_UCR_STATUS      =                            00037000
+037100                     (SELECT S37_STATUS                           00037100
+037200                      FROM   APT_S37_UCR_STATUS                   00037200
+037300                      WHERE  S37_SHORT_DESCR = 'UNAWARDED')       00037300
+037400                ,A01_UCR_TMESTMP     = :S07-START-TSTAMP          00037400
+037500                ,A01_UCR_USERID      = 'APC2AWD'                  00037500
+037600          WHERE  A01_UCR_STATUS      =                            00037600
+037700                     (SELECT S37_STATUS                           00037700
+037800                      FROM   APT_S37_UCR_STATUS                   00037800
+037900                      WHERE  S37_SHORT_DESCR = 'SENT C2FO')       00037900
+038000          AND    A01_C2FO_SITE_CODE <> ' '                        00038000
+038100          AND    A01_AWARDED_DATE    = '0001-01-01'               00038100
+038200          AND    A01_PAID_FLAG       = 'N'                        00038200
+038300     END-EXEC                                                     00038300
+038400     EVALUATE SQLCODE                                             00038400
+038500     WHEN +0                                                      00038500
+038600          ADD SQLERRD(3) TO A01-RESET-COUNT                       00038600
+038700     WHEN +100                                                    00038700
+038800        CONTINUE                                                  00038800
+038900     WHEN OTHER                                                   00038900
+039000        DISPLAY 'SQLCODE NOT OK'                                  00039000
+039100        DISPLAY 'A01 TABLE RESET ERROR'                           00039100
+039200        MOVE    'R0000'             TO ED-SECTION-ID              00039200
+039300        MOVE    '12'                TO ED-RETURN-CODE             00039300
+039400        MOVE    'Y'                 TO ERROR-SWITCH               00039400
+039500        PERFORM E0000-EROUTINE                                    00039500
+039600        PERFORM F0000-FORCE-ABEND                                 00039600
+039700     END-EVALUATE                                                 00039700
+039800     .                                                            00039800
+039900                                                                  00039900
+040000*-----------------------------------------------------------------00040000
+040100 E0000-EROUTINE.                                                  00040100
+040200*-----------------------------------------------------------------00040200
+040300     MOVE    SPACE                   TO  ED-SQL                   00040300
+040400     MOVE    SQLCODE                 TO  EDH-SQLCODE-9            00040400
+040500     MOVE    EDH-SQLCODE-4-10        TO  ED-SQLCODE               00040500
+040600     MOVE    SQLERRMC                TO  ED-SQLERRMC              00040600
+040700     CALL    'DSNTIAR'            USING  SQLCA                    00040700
+040800                                         EDO-DSNTIAR-OUTPUT       00040800
+040900                                         EDI-DSNTIAR-INPUT        00040900
+041000     DISPLAY EDO-DSNTIAR-OUTPUT                                   00041000
+041100                                                                  00041100
+041200     DISPLAY 'PROGRAM ERROR MESSAGE : '                           00041200
+041300             ACCEPT  ED-TIME FROM  TIME                           00041300
+041400             DISPLAY ED-ERROR-DESCRIPTION                         00041400
+041500     .                                                            00041500
+041600                                                                  00041600
+041700*-----------------------------------------------------------------00041700
+041800 F0000-FORCE-ABEND.                                               00041800
+041900*-----------------------------------------------------------------00041900
+042000                                                                  00042000
+042100     CALL 'ILBOABN0'                                              00042100
+042200     .                                                            00042200
+042300                                                                  00042300
+042400*-----------------------------------------------------------------00042400
+042500 Z0000-END.                                                       00042500
+042600*-----------------------------------------------------------------00042600
+042700                                                                  00042700
+042800*XCLUDE HEADER 4M TOTAL COUNT, PREV DAY INV FILE COUNT PREDICTION 00042800
+042900     SUBTRACT 1 FROM FILE-REC-COUNT                               00042900
+043000     COMPUTE YESTER-INV-COUNT = A01-UPDATE-COUNT + A01-RESET-COUNT00043000
+043100     CLOSE   INP-FILE                                             00043100
+043200     .                                                            00043200
+043300                                                                  00043300
+043400*-----------------------------------------------------------------00043400
+043500*                  E N D  O F  P R O G R A M                      00043500
+043600*-----------------------------------------------------------------00043600
+
